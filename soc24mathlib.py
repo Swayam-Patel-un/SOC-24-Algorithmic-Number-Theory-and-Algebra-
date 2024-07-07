@@ -305,6 +305,22 @@ class QuotientPolynomialRing:
     for _ in range(len(a)-1,d-1):
       a.append(0)
     return a
+  
+  @staticmethod
+  def _polydivmod(nume, deno):
+    if deno[-1] != 1:
+      raise ValueError("Divisor polynomial must be monic.")  
+    q = [0] * (len(nume) - len(deno) + 1)
+    r = nume[:]   
+    while len(r) >= len(deno):
+      if r[-1] != 0:
+        lc= r[-1]
+        qd = len(r) - len(deno)
+        q[qd] = lc
+        for i in range(len(deno)):
+          r[qd + i] -= lc * deno[i]  
+      r.pop()
+    return q,r
     
   @staticmethod
   def Add(poly1, poly2):
@@ -338,57 +354,34 @@ class QuotientPolynomialRing:
   @staticmethod
   def Inv(poly):
     def exeu(h,f):
+      opg = f[:]
       p1=QuotientPolynomialRing(h,f)
       p2=QuotientPolynomialRing(f,f)
-      MOD=f
-      print(MOD)
       gcd=QuotientPolynomialRing._polygcd(p1.element,p2.element)
-      print("MOD", gcd)
       ch=[1]+[0]*(len(gcd)-1)
-      print("Second",gcd, "other ",ch)
       if gcd !=ch:
         return ValueError("Non invertible pair")
-      r=f
-      print("f ",r)
+      r=opg
       r1=h
       s=[1]
       s1=[0]
       t=[0]
       t1=[1]
       while r1!=[0]:
-        q,r2=QuotientPolynomialRing.polydivmod(r,r1)
+        q,r2=QuotientPolynomialRing._polydivmod(r,r1)
         r=r1
         s=s1
         t=t1
         r1=r2
         s1=QuotientPolynomialRing._polysub(s,QuotientPolynomialRing._polymul(s1,q))
         t1=QuotientPolynomialRing._polysub(t,QuotientPolynomialRing._polymul(t1,q))
-        print("t ",t)
         if r==[1]:
           break
-        print(MOD)
-      return t,poly.pi_generator
-    result=QuotientPolynomialRing([],poly.pi_generator)
-    print("Before:")
-    print(result.element,"\t", result.pi_generator)
-    result.element=exeu(poly.element,poly.pi_generator)
-    print("After:")
-    print(result.element,"\t", result.pi_generator)
-    return result
-  
-  
-  @staticmethod
-  def polydivmod(nume, deno):
-    if deno[-1] != 1:
-      raise ValueError("Divisor polynomial must be monic.")  
-    q = [0] * (len(nume) - len(deno) + 1)
-    r = nume[:]   
-    while len(r) >= len(deno):
-      if r[-1] != 0:
-        lc= r[-1]
-        qd = len(r) - len(deno)
-        q[qd] = lc
-        for i in range(len(deno)):
-          r[qd + i] -= lc * deno[i]  
-      r.pop()
-    return q, r
+      return t,opg
+    l=len(poly.element)
+    while(poly.element[-1]==0):
+      poly.element.pop()
+    result,pg=exeu(poly.element, poly.pi_generator)
+    for _ in range(len(result)-1,l-1):
+      result.append(0)
+    return QuotientPolynomialRing(result,pg)
