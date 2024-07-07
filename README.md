@@ -41,18 +41,18 @@ A python file that contains various functions for Number theory and Algebra
 
 19. Implement a class QuotientPolynomialRing. This class would represents elements in a univariate polynomial ring over the integers modulo some specified monic polynomial in the same ring. Polynomials would be represented using a list of ints, where the i^th index represents the coefficient of X^i. The length of the list would be the degree d of the quotienting polynomial. For instance, if the quotienting polynomial is X^4 + 5, and we want to represent 6X^2 + 7X + 3, it would be represented as [3, 7, 6, 0] Implement the following in the class:
 
-19.1 An instance variable called pi_generator which would be the the "quotienting polynomial", and an instance variable called element to represent the element of the ring.
+19.1- An instance variable called pi_generator which would be the the "quotienting polynomial", and an instance variable called element to represent the element of the ring.
 
-19.2 __init__(self, poly: list[int], pi_gen: list[int]) -> None : This initialises the object as required. Return an exception if pi_gen is empty or not monic.
+19.2- __init__(self, poly: list[int], pi_gen: list[int]) -> None : This initialises the object as required. Return an exception if pi_gen is empty or not monic.
 
-19.3 A static method Add(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing  which adds two polynomials modulo pi_generator. 
+19.3- A static method Add(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing  which adds two polynomials modulo pi_generator. 
 
-19.4 Raise an exception if the two arguments have different pi_generators.
+19.4- Raise an exception if the two arguments have different pi_generators.
 
-19.5 A static method Sub(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing  which subtracts two polynomials modulo pi_generator. Raise an exception if the two arguments have different pi_generators.
+19.5- A static method Sub(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing  which subtracts two polynomials modulo pi_generator. Raise an exception if the two arguments have different pi_generators.
 
-19.6 A static method Mul(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing  which multiplies two polynomials modulo pi_generator. Raise an exception if the two arguments have different pi_generators.
+19.6- A static method Mul(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing  which multiplies two polynomials modulo pi_generator. Raise an exception if the two arguments have different pi_generators.
 
-19.7 A static method GCD(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing which returns the GCD of two polynomials modulo pi_generator. Raise an exception if the two arguments have different pi_generators.
+19.7- A static method GCD(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing which returns the GCD of two polynomials modulo pi_generator. Raise an exception if the two arguments have different pi_generators.
 
-19.8 A static method Inv(poly: QuotientPolynomialRing) -> QuotientPolynomialRing which returns the modular inverse of a polynomial modulo pi_generator. Raise an exception if the polynomial is not invertible in the ring.
+19.8- A static method Inv(poly: QuotientPolynomialRing) -> QuotientPolynomialRing which returns the modular inverse of a polynomial modulo pi_generator. Raise an exception if the polynomial is not invertible in the ring.
