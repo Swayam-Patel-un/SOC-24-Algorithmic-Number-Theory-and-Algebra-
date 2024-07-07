@@ -378,23 +378,17 @@ class QuotientPolynomialRing:
   
   
   @staticmethod
-  def polydivmod(dividend, divisor):
-        # Ensure the divisor is monic
-        if divisor[-1] != 1:
-            raise ValueError("Divisor polynomial must be monic.")
-        
-        quotient = [0] * (len(dividend) - len(divisor) + 1)
-        remainder = dividend[:]
-        
-        while len(remainder) >= len(divisor):
-            if remainder[-1] != 0:
-                leading_coefficient_ratio = remainder[-1]
-                quotient_term_degree = len(remainder) - len(divisor)
-                quotient[quotient_term_degree] = leading_coefficient_ratio
-                
-                for i in range(len(divisor)):
-                    remainder[quotient_term_degree + i] -= leading_coefficient_ratio * divisor[i]
-            
-            remainder.pop()
-        
-        return quotient, remainder
+  def polydivmod(nume, deno):
+    if deno[-1] != 1:
+      raise ValueError("Divisor polynomial must be monic.")  
+    q = [0] * (len(nume) - len(deno) + 1)
+    r = nume[:]   
+    while len(r) >= len(deno):
+      if r[-1] != 0:
+        lc= r[-1]
+        qd = len(r) - len(deno)
+        q[qd] = lc
+        for i in range(len(deno)):
+          r[qd + i] -= lc * deno[i]  
+      r.pop()
+    return q, r
