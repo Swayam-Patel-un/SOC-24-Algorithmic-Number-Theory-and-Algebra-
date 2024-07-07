@@ -287,10 +287,24 @@ class QuotientPolynomialRing:
   @staticmethod
   def _polymul(a,b):
     result = [0] * (len(a) + len(b) - 1)
-    for i in range(len(a)):
+    for i in range(len(a)): 
       for j in range(len(b)):
         result[i + j] += a[i] * b[j]
     return result
+  
+  @staticmethod
+  def _polygcd(a,b):
+    d=len(a)
+    while(not QuotientPolynomialRing._empty(b)):
+      r=QuotientPolynomialRing.modulusm(a,b)
+      a=b
+      b=r
+      if (b==[0]):
+        break
+      QuotientPolynomialRing._modulus(a,b)
+    for _ in range(len(a)-1,d-1):
+      a.append(0)
+    return a
     
   @staticmethod
   def Add(poly1, poly2):
@@ -316,53 +330,71 @@ class QuotientPolynomialRing:
   @staticmethod
   def GCD(poly1, poly2):
     QuotientPolynomialRing._check_pi_generators(poly1,poly2)
-    a,b=poly1.element,poly2.element
-    d=len(a)
-    while(not QuotientPolynomialRing._empty(b)):
-      r=QuotientPolynomialRing.modulusm(a,b)
-      a=b
-      b=r
-      if (b==[0]):
-        break
-      QuotientPolynomialRing._modulus(a,b)
-    print("a after iterations ",a)
-    for _ in range(len(a)-1,d-1):
-      a.append(0)
-    QuotientPolynomialRing._modulus(a,poly1.pi_generator)
-    return QuotientPolynomialRing(a,poly1.pi_generator)
+    result=QuotientPolynomialRing._polygcd(poly1.element,poly2.element)
+    QuotientPolynomialRing._modulus(result,poly1.pi_generator)
+    return QuotientPolynomialRing(result,poly1.pi_generator)
+  
   
   @staticmethod
   def Inv(poly):
-        r0, r1 = poly.pi_generator[:], poly.element[:]
-        s0, s1 = [1] + [0] * (len(r0) - 1), [0] * len(r0)
-        t0, t1 = [0] * len(r0), [1] + [0] * (len(r0) - 1)
-        
-        while any(r1):
-            quotient, remainder = QuotientPolynomialRing.divmod(r0, r1)
-            r0, r1 = r1, remainder
-            s0, s1 = s1, QuotientPolynomialRing.Sub(QuotientPolynomialRing(s0, poly.pi_generator), QuotientPolynomialRing.Mul(QuotientPolynomialRing(quotient, poly.pi_generator), QuotientPolynomialRing(s1, poly.pi_generator))).element
-            t0, t1 = t1, QuotientPolynomialRing.Sub(QuotientPolynomialRing(t0, poly.pi_generator), QuotientPolynomialRing.Mul(QuotientPolynomialRing(quotient, poly.pi_generator), QuotientPolynomialRing(t1, poly.pi_generator))).element
-        
-        if r0 != [1] + [0] * (len(poly.pi_generator) - 1):
-            raise ValueError("The polynomial is not invertible.")
-        return QuotientPolynomialRing(t0, poly.pi_generator)
-    
+    def exeu(h,f):
+      p1=QuotientPolynomialRing(h,f)
+      p2=QuotientPolynomialRing(f,f)
+      MOD=f
+      print(MOD)
+      gcd=QuotientPolynomialRing._polygcd(p1.element,p2.element)
+      print("MOD", gcd)
+      ch=[1]+[0]*(len(gcd)-1)
+      print("Second",gcd, "other ",ch)
+      if gcd !=ch:
+        return ValueError("Non invertible pair")
+      r=f
+      print("f ",r)
+      r1=h
+      s=[1]
+      s1=[0]
+      t=[0]
+      t1=[1]
+      while r1!=[0]:
+        q,r2=QuotientPolynomialRing.polydivmod(r,r1)
+        r=r1
+        s=s1
+        t=t1
+        r1=r2
+        s1=QuotientPolynomialRing._polysub(s,QuotientPolynomialRing._polymul(s1,q))
+        t1=QuotientPolynomialRing._polysub(t,QuotientPolynomialRing._polymul(t1,q))
+        print("t ",t)
+        if r==[1]:
+          break
+        print(MOD)
+      return t,poly.pi_generator
+    result=QuotientPolynomialRing([],poly.pi_generator)
+    print("Before:")
+    print(result.element,"\t", result.pi_generator)
+    result.element=exeu(poly.element,poly.pi_generator)
+    print("After:")
+    print(result.element,"\t", result.pi_generator)
+    return result
+  
+  
   @staticmethod
-  def divmod(poly1, poly2):
-        quotient = [0] * len(poly1)
-        remainder = poly1[:]
-        divisor_degree = len(poly2) - 1
-        divisor_lead_coef = poly2[divisor_degree]
+  def polydivmod(dividend, divisor):
+        # Ensure the divisor is monic
+        if divisor[-1] != 1:
+            raise ValueError("Divisor polynomial must be monic.")
         
-        for i in range(len(poly1) - len(poly2) + 1):
-            coef = remainder[len(poly1) - 1 - i] // divisor_lead_coef
-            quotient[len(poly1) - len(poly2) - i] = coef
-            for j in range(len(poly2)):
-                remainder[len(poly1) - 1 - i - j] -= coef * poly2[len(poly2) - 1 - j]
+        quotient = [0] * (len(dividend) - len(divisor) + 1)
+        remainder = dividend[:]
         
-        while len(remainder) > 1 and remainder[-1] == 0:
+        while len(remainder) >= len(divisor):
+            if remainder[-1] != 0:
+                leading_coefficient_ratio = remainder[-1]
+                quotient_term_degree = len(remainder) - len(divisor)
+                quotient[quotient_term_degree] = leading_coefficient_ratio
+                
+                for i in range(len(divisor)):
+                    remainder[quotient_term_degree + i] -= leading_coefficient_ratio * divisor[i]
+            
             remainder.pop()
         
         return quotient, remainder
-
-  
