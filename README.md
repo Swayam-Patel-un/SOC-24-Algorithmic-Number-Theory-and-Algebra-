@@ -1,5 +1,7 @@
 # SOC-24-Algorithmic-Number-Theory-and-Algebra-
-A python file that contains various functions for Number theory and Algebra
+This is my SOC project under WnCC and mentor Nilabha Saha on the topic Algorithmic-Number-Theory-and-Algebra, which is implemented from the book A Computation Introduction to Number theory and Algebra by Victor Shoup.
+
+The python file contains the functions:
 
 ### Fuctions till now:
 
