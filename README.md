@@ -58,3 +58,23 @@ The python file contains the functions:
 19.7- A static method GCD(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing which returns the GCD of two polynomials modulo pi_generator. Raise an exception if the two arguments have different pi_generators.
 
 19.8- A static method Inv(poly: QuotientPolynomialRing) -> QuotientPolynomialRing which returns the modular inverse of a polynomial modulo pi_generator. Raise an exception if the polynomial is not invertible in the ring.
+
+20. get_generator(p : int) -> int : Returns a generator of (Z_p)^*; assume p is prime.
+
+21. discrete_log(x: int, g: int, p: int) -> int : Returns the discrete logarithm of x to the base g in (Z_p)^*; assume p is prime. Raise an exception if the discrete logarithm does not exist.
+
+22. legendre_symbol(a: int, p: int) -> int: Returns the value of the Legendre Symbol (a | p); assume p is prime.
+
+23. jacobi_symbol(a: int, n: int) -> int: Returns the value of the Jacobi Symbol (a | n); assume n is positive.
+
+24. modular_sqrt_prime(x: int, p: int) -> int : Returns the modular square root of x modulo p (where p is prime). Raise an exception if the square root does not exist.
+
+25. modular_sqrt_prime_power(x: int, p: int, e: int) -> int: Returns the modular square root of x modulo p^e (where p is prime, e >= 1). Raise an exception if the square root does not exist.
+
+26. modular_sqrt(x: int, n: int) -> int: Returns the modular square root of x modulo n (n >= 1). Raise an exception if the square root does not exist. (Not working yet)
+
+27. is_smooth(m: int, y: int) -> bool: Return True if m is y-smooth, False otherwise.
+
+28. probabilistic_dlog(x: int, g: int, p: int) -> int: Returns the discrete log of x to the base g in (Z_p)^* using a subexponential probabilistic algorithm; assume p is prime, and g is a generator of (Z_p)^*. Raise and exception if the square root does not exist.
+
+29. probabilistic_factor(n: int) -> list[tuple[int, int]]: Returns the prime factorisation of n using a subexponential probabilistic algorithm; assume n >= 1. This should return a list of tuple, where the first component of the tuples are the prime factors, and the second component of the tuple is the respective power to which the corresponding factor is raised in the prime factorisation. The first components must appear in ascending order in the list.
