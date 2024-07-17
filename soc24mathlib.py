@@ -385,3 +385,168 @@ class QuotientPolynomialRing:
     for _ in range(len(result)-1,l-1):
       result.append(0)
     return QuotientPolynomialRing(result,pg)
+
+def get_generator(p: int) -> int:
+  if p<=2:
+    raise ValueError("p must be an odd prime number.")
+  q=(p-1)//2
+  for g in range(2,p):
+    if pow(g,2,p)!=1 and pow(g,q,p)!=1:
+      return g
+  raise ValueError("No generator found.")
+
+def discrete_log(x: int, g: int, p: int) -> int:
+    m = floor_sqrt(p - 1) + 1
+    baby_steps = {}
+    current = 1
+    for j in range(m):
+        if current not in baby_steps:
+            baby_steps[current] = j
+        current = (current * g) % p
+    inv_gm = pow(g, -m, p)
+    giant_step = x
+    for i in range(m):
+        if giant_step in baby_steps:
+            return i * m + baby_steps[giant_step]
+        giant_step = (giant_step * inv_gm) % p
+
+    raise ValueError("Discrete logarithm does not exist")
+  
+def legendre_symbol(a: int, p: int) -> int:
+    if p <= 2:
+        raise ValueError("p must be an odd prime number.")
+    ls = pow(a, (p - 1) // 2, p)
+    if ls == p - 1:
+        return -1
+    return ls
+  
+def jacobi_symbol(a: int, n: int) -> int:
+    if n <= 0:
+        raise ValueError("n must be a positive integer.")
+    if n % 2 == 0:
+        raise ValueError("n must be an odd integer.")
+
+    a = a % n
+    jacobi = 1
+
+    while a != 0:
+        while a % 2 == 0:
+            a //= 2
+            if n % 8 in [3, 5]:
+                jacobi = -jacobi
+
+        a, n = n, a  # Swap a and n
+
+        if a % 4 == 3 and n % 4 == 3:
+            jacobi = -jacobi
+
+        a = a % n
+
+    if n == 1:
+        return jacobi
+    else:
+        return 0
+
+def modular_sqrt_prime(n, p):
+    if legendre_symbol(n, p) != 1:
+        return None
+    q, s = p - 1, 0
+    while q % 2 == 0:
+        q //= 2
+        s += 1
+    z = 2
+    while legendre_symbol(z, p) != -1:
+        z += 1
+    m, c, t, r = s, pow(z, q, p), pow(n, q, p), pow(n, (q + 1) // 2, p)
+    while t != 0 and t != 1:
+        t2i, i = t, 0
+        while t2i != 1:
+            t2i = pow(t2i, 2, p)
+            i += 1
+        b = pow(c, 2**(m - i - 1), p)
+        m = i
+        c = pow(b, 2, p)
+        t = (t * c) % p
+        r = (r * b) % p
+    return min(r, p - r)
+  
+  
+def modular_sqrt_prime_power(x, p, e):
+    if e == 1:
+        return modular_sqrt_prime(x, p)
+    r = modular_sqrt_prime(x, p)
+    if r is None:
+        raise ValueError("No square root exists")
+    pe = p
+    for _ in range(1, e):
+        pe *= p
+        if (r * r - x) % pe == 0:
+            continue
+        f = (r * r - x) // pe
+        r = (r - (f * pow(2 * r, -1, p)) % pe) % pe
+    return min(r, pe-r)
+
+
+  
+def is_smooth(m: int, y: int) -> bool:
+    factors = factor(m)
+    for f in factors:
+        if f[0] > y:
+            return False
+    return True
+  
+def probabilistic_dlog(x: int, g: int, p: int) -> int:
+  B = floor_sqrt(p - 1) + 1
+  value = 1
+  baby_steps = {}
+  for i in range(B):
+    baby_steps[value] = i
+    value = (value * g) % p
+  inv = pow(g, -B, p)
+  value = x
+  for j in range(B):
+    if value in baby_steps:
+      return j * B + baby_steps[value]
+    value = (value * inv) % p
+  raise ValueError("Discrete logarithm does not exist")
+  
+def probabilistic_factor(n: int) -> list[tuple[int, int]]:
+  def rho(n, c):
+    if n % 2 == 0:
+      return 2
+    x, y, d = 2, 2, 1
+    f = lambda x: (x**2 + c) % n
+    while d == 1:
+      x = f(x)
+      y = f(f(y))
+      d = pair_gcd(abs(x - y), n)
+    if d == n:
+      return None
+    return d
+
+  factors = {}
+
+  def factorize(n):
+    if n == 1:
+      return
+    if is_prime(n):
+      factors[n] = factors.get(n, 0) + 1
+    else:
+      divisor = None
+      c = 1
+      while divisor is None and c < 100: 
+                divisor = rho(n, c)
+                c += 1
+      if divisor is None or divisor == n:
+        for i in range(2, floor_sqrt(n) + 1):
+          while n % i == 0:
+            factors[i] = factors.get(i, 0) + 1
+            n //= i
+        if n > 1:
+          factors[n] = factors.get(n, 0) + 1
+      else:
+        factorize(divisor)
+        factorize(n // divisor)
+
+  factorize(n)
+  return sorted(factors.items())
