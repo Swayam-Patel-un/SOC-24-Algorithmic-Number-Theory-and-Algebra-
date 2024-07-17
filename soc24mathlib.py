@@ -421,31 +421,26 @@ def legendre_symbol(a: int, p: int) -> int:
     return ls
   
 def jacobi_symbol(a: int, n: int) -> int:
-    if n <= 0:
-        raise ValueError("n must be a positive integer.")
-    if n % 2 == 0:
-        raise ValueError("n must be an odd integer.")
-
+  if n <= 0:
+    raise ValueError("n must be a positive integer.")
+  if n % 2 == 0:
+    raise ValueError("n must be an odd integer.")
+  a = a % n
+  jac = 1
+  while a != 0:
+    while a % 2 == 0:
+      a //= 2
+      if n % 8 in [3, 5]:
+        jac = -jac
+    a, n = n, a
+    if a % 4 == 3 and n % 4 == 3:
+      jac = -jac
     a = a % n
-    jacobi = 1
 
-    while a != 0:
-        while a % 2 == 0:
-            a //= 2
-            if n % 8 in [3, 5]:
-                jacobi = -jacobi
-
-        a, n = n, a  # Swap a and n
-
-        if a % 4 == 3 and n % 4 == 3:
-            jacobi = -jacobi
-
-        a = a % n
-
-    if n == 1:
-        return jacobi
-    else:
-        return 0
+  if n == 1:
+    return jac
+  else:
+    return 0
 
 def modular_sqrt_prime(n, p):
     if legendre_symbol(n, p) != 1:
@@ -469,22 +464,21 @@ def modular_sqrt_prime(n, p):
         t = (t * c) % p
         r = (r * b) % p
     return min(r, p - r)
-  
-  
+    
 def modular_sqrt_prime_power(x, p, e):
-    if e == 1:
-        return modular_sqrt_prime(x, p)
-    r = modular_sqrt_prime(x, p)
-    if r is None:
-        raise ValueError("No square root exists")
-    pe = p
-    for _ in range(1, e):
-        pe *= p
-        if (r * r - x) % pe == 0:
-            continue
-        f = (r * r - x) // pe
-        r = (r - (f * pow(2 * r, -1, p)) % pe) % pe
-    return min(r, pe-r)
+  if e == 1:
+    return modular_sqrt_prime(x, p)
+  y = modular_sqrt_prime(x, p)
+  if y is None:
+    return None
+  pe = p
+  for k in range(1, e):
+    r = (x - y * y) // pe
+    r = (r * pow(2 * y, -1, p)) % p
+    y = (y + r * pe) % (pe * p)
+    pe *= p
+    k+=1
+  return min(y, p**e - y)
 
 
   
