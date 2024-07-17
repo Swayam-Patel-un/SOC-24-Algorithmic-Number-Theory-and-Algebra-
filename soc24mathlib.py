@@ -442,7 +442,7 @@ def jacobi_symbol(a: int, n: int) -> int:
   else:
     return 0
 
-def modular_sqrt_prime(n, p):
+def modular_sqrt_prime(n: int, p: int) -> int:
     if legendre_symbol(n, p) != 1:
         return None
     q, s = p - 1, 0
@@ -464,8 +464,9 @@ def modular_sqrt_prime(n, p):
         t = (t * c) % p
         r = (r * b) % p
     return min(r, p - r)
-    
-def modular_sqrt_prime_power(x, p, e):
+
+# works for odd prime     
+def modular_sqrt_prime_power(x: int, p: int, e: int) -> int:
   if e == 1:
     return modular_sqrt_prime(x, p)
   y = modular_sqrt_prime(x, p)
@@ -480,7 +481,23 @@ def modular_sqrt_prime_power(x, p, e):
     k+=1
   return min(y, p**e - y)
 
+# doesn't work
+'''def modular_sqrt(x: int, n: int) -> int:
+    factors = factor(n)
+    residues = []
+    moduli = []
 
+    for (p, e) in factors:
+      if e==1:
+        r=modular_sqrt_prime(x,p)
+        if r is None:
+          return p
+      else:
+        r=modular_sqrt_prime_power(x,p,e)
+      residues.append(r)
+      moduli.append(p**e)
+    print(crt(residues, moduli))
+    return crt(residues, moduli)'''
   
 def is_smooth(m: int, y: int) -> bool:
     factors = factor(m)
