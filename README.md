@@ -1,80 +1,100 @@
-# SOC-24-Algorithmic-Number-Theory-and-Algebra-
-This is my SOC project under WnCC and mentor Nilabha Saha on the topic Algorithmic-Number-Theory-and-Algebra, which is implemented from the book A Computation Introduction to Number theory and Algebra by Victor Shoup.
+# SOC-24: Algorithmic Number Theory and Algebra
 
-The python file contains the functions:
+This project, part of the Summer of Code (SOC) under the **Web and Coding Club (WnCC)** at IIT Bombay, focuses on the implementation of key algorithms in number theory and algebra. The project is mentored by **Nilabha Saha** and implemented from the book *A Computational Introduction to Number Theory and Algebra* by **Victor Shoup**.
 
-### Fuctions till now:
+## Implemented Functions
 
-1. pair_gcd(a: int, b: int) -> int : Returns the GCD of a and b [Hint: Euclidean Algorithm]
+### 1. `pair_gcd(a: int, b: int) -> int`
+Returns the GCD of `a` and `b` (Hint: Euclidean Algorithm).
 
-2. pair_egcd(a: int, b: int) -> tuple[int, int, int] : Returns (x,y,d) where d is the GCD of a and b, and x and y are integers such that ax+by=d
+### 2. `pair_egcd(a: int, b: int) -> tuple[int, int, int]`
+Returns a tuple `(x, y, d)` where `d` is the GCD of `a` and `b`, and `x` and `y` are integers such that `a*x + b*y = d`.
 
-3. gcd(*args: int) -> int : Returns the GCD of all integers provided as arguments [Assume 2 or more arguments are always passed]
+### 3. `gcd(*args: int) -> int`
+Returns the GCD of all integers provided as arguments (Assume 2 or more arguments are always passed).
 
-4. pair_lcm(a: int, b: int) -> int : Returns the LCM of a and b
+### 4. `pair_lcm(a: int, b: int) -> int`
+Returns the LCM of `a` and `b`.
 
-5. lcm(*args: int) -> int: Returns the LCM of all integers provided as arguments [Assume 2 or more arguments are always passed]
+### 5. `lcm(*args: int) -> int`
+Returns the LCM of all integers provided as arguments (Assume 2 or more arguments are always passed).
 
-6. are_relatively_prime(a: int, b: int) -> bool: Returns True if a and b are relatively prime, False otherwise
+### 6. `are_relatively_prime(a: int, b: int) -> bool`
+Returns `True` if `a` and `b` are relatively prime, `False` otherwise.
 
-7. mod_inv(a: int, n: int) -> int: Return the modular inverse of a modulo n. For this function, raise an Exception if a and n are not coprime
+### 7. `mod_inv(a: int, n: int) -> int`
+Returns the modular inverse of `a` modulo `n`. Raises an exception if `a` and `n` are not coprime.
 
-8. crt(a: list[int], n: list[int]) -> int: This function applies the Chinese Remainder Theorem to find the unique value of a modulo product of all n[i] such that a = a[i] (mod n[i]) [Assume all the n[i] are pairwise coprime and that the length of the two lists are the same and is nonzero)
+### 8. `crt(a: list[int], n: list[int]) -> int`
+Applies the Chinese Remainder Theorem to find the unique value of `a` modulo the product of all `n[i]`, such that `a = a[i] (mod n[i])`. Assumes all `n[i]` are pairwise coprime and the lengths of `a` and `n` are the same.
 
-9. is_quadratic_residue_prime(a: int, p: int) -> int: Return 1 if a is a quadratic residue modulo p, return -1 if a is a quadratic non-residue modulo p, return 0 if a is not coprime to p [Assume p is prime]
+### 9. `is_quadratic_residue_prime(a: int, p: int) -> int`
+Returns `1` if `a` is a quadratic residue modulo `p`, `-1` if `a` is a quadratic non-residue, and `0` if `a` is not coprime to `p` (Assumes `p` is prime).
 
-10. is_quadratic_residue_prime_power(a: int, p: int, e: int) -> int: Return 1 if a is a quadratic residue modulo p^e, return -1 if a is a quadratic non-residue modulo p^e, return 0 if a is not coprime to p^e [Assume p is prime and e >= 1]
+### 10. `is_quadratic_residue_prime_power(a: int, p: int, e: int) -> int`
+Returns `1` if `a` is a quadratic residue modulo `p^e`, `-1` if `a` is a quadratic non-residue, and `0` if `a` is not coprime to `p^e` (Assumes `p` is prime and `e >= 1`).
 
-11. floor_sqrt(x: int) -> int : Returns the floor of the square root of x; assume x > 0
+### 11. `floor_sqrt(x: int) -> int`
+Returns the floor of the square root of `x` (Assumes `x > 0`).
 
-12.is_perfect_power(x: int) -> bool : Returns if x is a perfect power; assume x > 1
+### 12. `is_perfect_power(x: int) -> bool`
+Returns `True` if `x` is a perfect power (Assumes `x > 1`).
 
-13. is_prime(n: int) -> bool : Use the Miller-Rabin test to return true if n is (probably) prime or false if it is composite; assume n > 1. Choose a good set of bases.
+### 13. `is_prime(n: int) -> bool`
+Uses the **Miller-Rabin test** to return `True` if `n` is (probably) prime or `False` if it is composite. (Assumes `n > 1` and chooses a good set of bases).
 
-14. gen_prime(m : int) -> int : Generate a random prime number p such that 2 <= p <= m; assume m > 2
+### 14. `gen_prime(m: int) -> int`
+Generates a random prime number `p` such that `2 <= p <= m` (Assumes `m > 2`).
 
-15. gen_k_bit_prime(k: int) -> int : Generate a random k-bit prime number, that is, a prime number p such that 2^(k-1) <= p < 2^k; assume k >= 1
+### 15. `gen_k_bit_prime(k: int) -> int`
+Generates a random `k`-bit prime number, that is, a prime number `p` such that `2^(k-1) <= p < 2^k` (Assumes `k >= 1`).
 
-16. factor(n: int) -> list[tuple[int, int]] : Returns the prime factorisation of n; assume n >= 1. This should return a list of tuple, where the first component of the tuples are the prime factors, and the second component of the tuple is the respective power to which the corresponding factor is raised in the prime factorisation. (What do you think the output should be if n = 1? Think about it before I release the test cases)
+### 16. `factor(n: int) -> list[tuple[int, int]]`
+Returns the prime factorization of `n`. (Assumes `n >= 1` and returns a list of tuples where the first component is the prime factor and the second component is the corresponding power in the factorization).
 
-17. euler_phi(n: int) -> int : Returns the Euler phi function of n.
+### 17. `euler_phi(n: int) -> int`
+Returns the **Euler phi function** of `n`.
 
-18. aks_test(n: int) -> bool : Use the AKS deterministic primality testing to return true if n is prime or false if it is composite; assume n > 1.
+### 18. `aks_test(n: int) -> bool`
+Uses the **AKS deterministic primality test** to return `True` if `n` is prime or `False` if it is composite (Assumes `n > 1`).
 
-19. Implement a class QuotientPolynomialRing. This class would represents elements in a univariate polynomial ring over the integers modulo some specified monic polynomial in the same ring. Polynomials would be represented using a list of ints, where the i^th index represents the coefficient of X^i. The length of the list would be the degree d of the quotienting polynomial. For instance, if the quotienting polynomial is X^4 + 5, and we want to represent 6X^2 + 7X + 3, it would be represented as [3, 7, 6, 0] Implement the following in the class:
+### 19. **`QuotientPolynomialRing` Class**
+This class represents elements in a univariate polynomial ring over integers modulo some specified monic polynomial in the same ring. Polynomials are represented using a list of ints where the `i^th` index represents the coefficient of `X^i`.
 
-19.1- An instance variable called pi_generator which would be the the "quotienting polynomial", and an instance variable called element to represent the element of the ring.
+#### Methods:
+- **`__init__(self, poly: list[int], pi_gen: list[int]) -> None`**: Initializes the object as required. Raises an exception if `pi_gen` is empty or not monic.
+- **`Add(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing`**: Adds two polynomials modulo `pi_generator`. Raises an exception if `pi_generators` differ.
+- **`Sub(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing`**: Subtracts two polynomials modulo `pi_generator`. Raises an exception if `pi_generators` differ.
+- **`Mul(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing`**: Multiplies two polynomials modulo `pi_generator`. Raises an exception if `pi_generators` differ.
+- **`GCD(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing`**: Returns the GCD of two polynomials modulo `pi_generator`. Raises an exception if `pi_generators` differ.
+- **`Inv(poly: QuotientPolynomialRing) -> QuotientPolynomialRing`**: Returns the modular inverse of a polynomial modulo `pi_generator`. Raises an exception if the polynomial is not invertible.
 
-19.2- __init__(self, poly: list[int], pi_gen: list[int]) -> None : This initialises the object as required. Return an exception if pi_gen is empty or not monic.
+### 20. `get_generator(p: int) -> int`
+Returns a generator of `(Z_p)^*` (Assumes `p` is prime).
 
-19.3- A static method Add(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing  which adds two polynomials modulo pi_generator. 
+### 21. `discrete_log(x: int, g: int, p: int) -> int`
+Returns the discrete logarithm of `x` to the base `g` in `(Z_p)^*` (Assumes `p` is prime). Raises an exception if the discrete logarithm does not exist.
 
-19.4- Raise an exception if the two arguments have different pi_generators.
+### 22. `legendre_symbol(a: int, p: int) -> int`
+Returns the value of the **Legendre Symbol** `(a | p)` (Assumes `p` is prime).
 
-19.5- A static method Sub(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing  which subtracts two polynomials modulo pi_generator. Raise an exception if the two arguments have different pi_generators.
+### 23. `jacobi_symbol(a: int, n: int) -> int`
+Returns the value of the **Jacobi Symbol** `(a | n)` (Assumes `n` is positive).
 
-19.6- A static method Mul(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing  which multiplies two polynomials modulo pi_generator. Raise an exception if the two arguments have different pi_generators.
+### 24. `modular_sqrt_prime(x: int, p: int) -> int`
+Returns the modular square root of `x` modulo `p` (Assumes `p` is prime). Raises an exception if the square root does not exist.
 
-19.7- A static method GCD(poly1: QuotientPolynomialRing, poly2: QuotientPolynomialRing) -> QuotientPolynomialRing which returns the GCD of two polynomials modulo pi_generator. Raise an exception if the two arguments have different pi_generators.
+### 25. `modular_sqrt_prime_power(x: int, p: int, e: int) -> int`
+Returns the modular square root of `x` modulo `p^e` (Assumes `p` is prime and `e >= 1`). Raises an exception if the square root does not exist.
 
-19.8- A static method Inv(poly: QuotientPolynomialRing) -> QuotientPolynomialRing which returns the modular inverse of a polynomial modulo pi_generator. Raise an exception if the polynomial is not invertible in the ring.
+### 26. `modular_sqrt(x: int, n: int) -> int`
+Returns the modular square root of `x` modulo `n` (Assumes `n >= 1`). Raises an exception if the square root does not exist (Not working yet).
 
-20. get_generator(p : int) -> int : Returns a generator of (Z_p)^*; assume p is prime.
+### 27. `is_smooth(m: int, y: int) -> bool`
+Returns `True` if `m` is `y`-smooth, `False` otherwise.
 
-21. discrete_log(x: int, g: int, p: int) -> int : Returns the discrete logarithm of x to the base g in (Z_p)^*; assume p is prime. Raise an exception if the discrete logarithm does not exist.
+### 28. `probabilistic_dlog(x: int, g: int, p: int) -> int`
+Returns the discrete log of `x` to the base `g` in `(Z_p)^*` using a **subexponential probabilistic algorithm**. (Assumes `p` is prime, and `g` is a generator of `(Z_p)^*`). Raises an exception if the square root does not exist.
 
-22. legendre_symbol(a: int, p: int) -> int: Returns the value of the Legendre Symbol (a | p); assume p is prime.
-
-23. jacobi_symbol(a: int, n: int) -> int: Returns the value of the Jacobi Symbol (a | n); assume n is positive.
-
-24. modular_sqrt_prime(x: int, p: int) -> int : Returns the modular square root of x modulo p (where p is prime). Raise an exception if the square root does not exist.
-
-25. modular_sqrt_prime_power(x: int, p: int, e: int) -> int: Returns the modular square root of x modulo p^e (where p is prime, e >= 1). Raise an exception if the square root does not exist.
-
-26. modular_sqrt(x: int, n: int) -> int: Returns the modular square root of x modulo n (n >= 1). Raise an exception if the square root does not exist. (Not working yet)
-
-27. is_smooth(m: int, y: int) -> bool: Return True if m is y-smooth, False otherwise.
-
-28. probabilistic_dlog(x: int, g: int, p: int) -> int: Returns the discrete log of x to the base g in (Z_p)^* using a subexponential probabilistic algorithm; assume p is prime, and g is a generator of (Z_p)^*. Raise and exception if the square root does not exist.
-
-29. probabilistic_factor(n: int) -> list[tuple[int, int]]: Returns the prime factorisation of n using a subexponential probabilistic algorithm; assume n >= 1. This should return a list of tuple, where the first component of the tuples are the prime factors, and the second component of the tuple is the respective power to which the corresponding factor is raised in the prime factorisation. The first components must appear in ascending order in the list.
+### 29. `probabilistic_factor(n: int) -> list[tuple[int, int]]`
+Returns the prime factorization of `n` using a **subexponential probabilistic algorithm**. (Assumes `n >= 1` and returns a list of tuples where the first component is the prime factor and the second component is the corresponding power in the factorization).
